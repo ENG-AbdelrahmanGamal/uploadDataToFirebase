@@ -2,7 +2,10 @@ package com.example.getfromfirebase;
 
 public class User {
 
-String name ,email ,phone ,image,password;
+    private String name = "" ,email = "" ,phone = "" ,image = "", password = "";
+
+    public User() {
+    }
 
     public User(String name, String email, String phone, String image) {
         this.name = name;

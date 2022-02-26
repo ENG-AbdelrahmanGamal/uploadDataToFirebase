@@ -60,7 +60,6 @@ app:layout_constraintTop_toTopOf="parent"
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/signin_et_email"
                 android:layout_width="match_parent"
-                android:hint="insert email"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:inputType="text" />

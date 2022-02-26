@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -14,11 +15,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
-FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-User user;
+    FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
+    User user;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    EditText editText_email,editText_phone,editText_name;
+    TextView editText_email, editText_name;
     private static final String TAG = "MainActivity";
     private Class<? extends User> userClass;
 
@@ -26,36 +29,41 @@ User user;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-editText_email=findViewById(R.id.signin_et_email);
-editText_name=findViewById(R.id.signin_et_name);
-editText_phone=findViewById(R.id.signin_et_phone);
+        editText_email=findViewById(R.id.tv_profile_email);
+        editText_name=findViewById(R.id.tv_profile_name);
 
-        db.collection(constant.Collection).document(constant.getUserId).get( ).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-    @Override
-    public void onComplete( Task<DocumentSnapshot> task) {
+        Log.i(TAG, "abdo uid onCreate: "+ constant.getUserId);
 
-    }
-});
-db.collection(constant.Collection).document(constant.getUserId)
-        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-    @Override
-    public void onComplete( Task<DocumentSnapshot> task) {
-        if(task.isSuccessful())
-        {
-            Log.i(TAG, "onComplete: "+task.getResult().getName());
-          //  user.setName(task.getResult().getClass().getName());
+        db.collection(constant.Collection).document(constant.getUserId)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete( Task<DocumentSnapshot> task) {
+                Log.i(TAG, "abdo task onComplete: "+ Objects.requireNonNull(task.getResult()).toObject(User.class).toString());
+            }
+        });
+
+        db.collection(constant.Collection).document(constant.getUserId)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete( Task<DocumentSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    Log.i(TAG, "abdo task onComplete: "+task.getResult().toString());
+                    User user = task.getResult().toObject(User.class);
+
+                    Log.i(TAG, "abdo user onComplete: "+ user.toString());
 
 
-//editText_name.setText(user.name);
-//editText_phone.setText(user.phone);
-        }
-        else {
-            String error =task.getException().getLocalizedMessage();
-            Log.i(TAG, "onComplete: "+error);
-            Toast.makeText(MainActivity.this, ""+error, Toast.LENGTH_SHORT).show();
-        }
-    }
-});
+                    editText_name.setText(user.getName());
+                    editText_email.setText(user.getEmail());
+                }
+                else {
+                    String error = task.getException().getLocalizedMessage();
+                    Log.i(TAG, "onComplete: "+error);
+                    Toast.makeText(MainActivity.this, ""+error, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 }
