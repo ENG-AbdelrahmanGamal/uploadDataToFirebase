@@ -1,0 +1,2 @@
+rootProject.name = "get from firebase"
+include ':app'

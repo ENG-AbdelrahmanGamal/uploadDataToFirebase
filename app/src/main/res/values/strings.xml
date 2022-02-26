@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">get from firebase</string>
+    <string name="name"  >Abdelrahman Gamal</string>
+    <string name="email_profil" >abdelrahman@gmail.com</string>
+    <string name="edit_profile" />
+    <string name="email" >email</string>
+    <string name="insert_password" />
+    <string name="register_now">Register Now</string>
+</resources>
